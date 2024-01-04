@@ -1,9 +1,9 @@
 # Coded With Love From @TheLogman a indian coder
 # Import the required libraries
-import os
-import telebot
-import requests
-import pandas as pd
-import spacy
-import googlemaps
-import pyzipcode
+os
+telebot
+requests
+pandas as pd
+spacy
+googlemaps
+pyzipcode
