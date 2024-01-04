@@ -1,12 +1,17 @@
 # Import the required libraries
 import os
 import telebot
+from telegram.ext import Updater
+from queue import Queue
 import telegram.ext
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
 # Create a bot instance with our API Key
 bot = telebot.TeleBot(API_KEY)
+
+# use the default value of None
+updater = Updater(API_KEY, update_queue=None)
 
 # Create an updater object with our API Key
 updater = telegram.ext.Updater(API_KEY)
