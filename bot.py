@@ -1,7 +1,7 @@
 # Import the required libraries
 import os
 import telebot
-from telegram.ext import *
+import telegram.ext
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
