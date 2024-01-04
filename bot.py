@@ -11,7 +11,7 @@ API_KEY = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(API_KEY)
 
 # use the default value of None
-updater = Updater(API_KEY, update_queue=None)
+updater = telegram.ext.Updater(API_KEY)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
