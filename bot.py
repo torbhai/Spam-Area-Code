@@ -7,12 +7,11 @@ import pandas as pd
 import spacy
 import googlemaps
 import pyzipcode
-
 # Load the NLP model
 nlp = spacy.load("en_core_web_sm")
 
 # Create a Google Maps client
-gmaps = googlemaps.Client(key="your-api-key-here")
+gmaps = googlemaps.Client(key="AIzaSyCIOnwQY5_22u1NU_qjVXFGoV9hHQGOOJ8")
 
 # Create a ZipCode database
 db = pyzipcode.ZipCodeDatabase()
@@ -148,7 +147,7 @@ banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 
          }
 
 # Create a bot instance with our API Key
-bot = telebot.TeleBot(API_KEY)
+bot = telebot.TeleBot(6970286006:AAEOz3ky8GrSp0UfaRbIOv6ueVSM0KSr-Y4)
 
 # Define a message handler that handles incoming text messages
 @bot.message_handler(content_types=['text'])
@@ -160,9 +159,3 @@ def handle_text(message):
         # Get the list of area codes for the bank
         area_codes = banks[bank_name]
 
-Source: Conversation with Bing, 4/1/2024
-(1) How to Make a Telegram Bot in Python - The Python Code. https://thepythoncode.com/article/make-a-telegram-bot-in-python.
-(2) How to Create a Telegram Bot using Python - freeCodeCamp.org. https://www.freecodecamp.org/news/how-to-create-a-telegram-bot-using-python/.
-(3) How to Create a Telegram Bot | Toptal®. https://www.toptal.com/python/telegram-bot-tutorial-python.
-(4) Step-by-step guide on how to make your own ChatGPT bot for Telegram. https://medium.com/@faranor/how-to-make-your-own-chatgpt-bot-for-telegram-c2f7e55a0e5c.
-(5) How to Create a Telegram BOT Using Python? - Analytics Vidhya. https://www.analyticsvidhya.com/blog/2022/12/how-to-create-a-telegram-bot-using-python/.
