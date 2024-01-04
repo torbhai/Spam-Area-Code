@@ -6,18 +6,17 @@ from asyncio import Queue
 from telegram import Bot
 from telegram.ext import Updater
 
-bot = Bot(TOKEN)
-update_queue = Queue()
-updater = Updater(bot, update_queue)
-
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
 # Create a bot instance with our API Key
-bot = telegram.ext.Bot(API_KEY)
+bot = telebot.TeleBot(API_KEY)
 
-# Create a queue for dispatching updates
-update_queue = Queue()
+# use the default value of None
+updater = telegram.ext.Updater(API_KEY)
+
+# Retrieve the dispatcher, which will be used to add handlers
+dispatcher = updater.dispatcher
 
 # Create an updater instance with our bot and queue
 updater = telegram.ext.Updater(bot=bot, update_queue=update_queue)
