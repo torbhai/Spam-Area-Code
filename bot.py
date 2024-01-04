@@ -1,10 +1,10 @@
 # Import the required libraries
 import os
 import telegram.ext
-from queue import Queue
-from asyncio import Queue
-from telegram import Bot
+import telebot
 from telegram.ext import Updater
+from queue import Queue
+from telegram import Bot
 
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
