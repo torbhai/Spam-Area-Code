@@ -15,9 +15,6 @@ bot = telebot.TeleBot(API_KEY)
 # use the default value of None
 updater = telegram.ext.Updater(API_KEY)
 
-# Create an updater instance with our bot and queue
-updater = telegram.ext.Updater(bot=bot, update_queue=update_queue)
-
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
 
