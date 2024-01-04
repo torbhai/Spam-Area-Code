@@ -1,6 +1,5 @@
 # Coded With Love From @TheLogman a indian coder
 # Import the required libraries
-os
 telebot
 requests
 pandas
