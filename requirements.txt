@@ -6,3 +6,4 @@ pandas
 spacy
 googlemaps
 pyzipcode
+gunicorn
