@@ -1,6 +1,7 @@
 # Coded With Love From @TheLogman a indian coder
 # Import the required libraries
 telebot
+python-telegram-bot
 requests
 pandas
 spacy
