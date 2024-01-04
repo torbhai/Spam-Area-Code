@@ -146,8 +146,22 @@ banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 
          "Citi Bank": [212, 332, 347, 646, 718, 917, 929, 213, 310, 323, 424, 626, 818, 312, 630, 708, 773, 847, 872, 415, 628, 305, 786, 202, 617, 857, 619, 760, 858, 281, 346, 713, 832, 214, 469, 682, 817, 972]
          }
 
+# The API Key we received for our bot
+API_KEY = os.environ.get('6970286006:AAEOz3ky8GrSp0UfaRbIOv6ueVSM0KSr-Y4')
+
 # Create a bot instance with our API Key
-bot = telebot.TeleBot(6970286006:AAEOz3ky8GrSp0UfaRbIOv6ueVSM0KSr-Y4)
+bot = telebot.TeleBot(API_KEY)
+
+# Define a function that handles the /start command
+def start(update, context):
+    # Send a welcome message to the user
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name. For High Quality bank logs and leads DM- @TheLogman")
+
+# Create an updater object with our API Key
+updater = telegram.ext.Updater(API_KEY)
+
+# Retrieve the dispatcher, which will be used to add handlers
+dispatcher = updater.dispatcher
 
 # Define a message handler that handles incoming text messages
 @bot.message_handler(content_types=['text'])
