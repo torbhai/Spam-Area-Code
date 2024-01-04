@@ -6,7 +6,7 @@ from asyncio import Queue
 from telegram import Bot
 from telegram.ext import Updater
 
-bot = Bot(BOT_TOKEN)
+bot = Bot(TOKEN)
 update_queue = Queue()
 updater = Updater(bot, update_queue)
 
