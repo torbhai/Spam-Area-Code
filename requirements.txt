@@ -10,3 +10,4 @@ googlemaps
 pyzipcode
 gunicorn
 python-bitcoinlib
+bitcoinlib
