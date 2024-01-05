@@ -9,4 +9,3 @@ spacy
 googlemaps
 pyzipcode
 gunicorn
-bitcoinlib
