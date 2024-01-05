@@ -1,19 +1,2 @@
 # Coded With Love From @TheLogman a indian coder
 bitcoinlib==0.6.13
-certifi==2023.11.17
-charset-normalizer==3.3.2
-docopt==0.6.2
-ecdsa==0.18.0
-greenlet==3.0.3
-idna==3.6
-numpy==1.26.3
-pipreqs==0.4.13
-pycryptodome==3.19.1
-reindent==3.5.1
-requests==2.31.0
-setuptools==69.0.3
-six==1.16.0
-SQLAlchemy==2.0.25
-typing_extensions==4.9.0
-urllib3==2.1.0
-yarg==0.1.9
