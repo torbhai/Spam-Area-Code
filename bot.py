@@ -165,11 +165,11 @@ def subscribe(update, context):
         tx_hash_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, tx_hash)
         # Add the handler to the dispatcher
         dispatcher.add_handler(tx_hash_handler)
-    elif option == "cancel":
+          elif option == "cancel":
         # The user clicked the "Cancel" button
         # Edit the message that contains the keyboard
         query.edit_message_text(text="You have canceled the payment process. You can use the /subscribe command again if you change your mind.")
-    else:
+          else:
         # The user clicked an unknown button
         # Send an error message to the user
         context.bot.send_message(chat_id, text="Unknown option. Please try again.")
