@@ -136,7 +136,6 @@ def button(update, context):
             # Fetch transaction details using a blockchain explorer API (replace with your preferred service)
             explorer = pycoin.services.BlockchainInfoProvider("YOUR_API_KEY")  # Replace with your API key
             tx_data = explorer.get_tx_by_hash(tx_hash)
-s
             # Create a transaction object from the fetched data
             tx = pycoin.tx.Tx.from_hex(tx_data)
 
