@@ -2,6 +2,7 @@
 import os
 from telegram.ext import Updater
 from queue import Queue
+import queue
 import telegram.ext
 import pymongo
 from pymongo import MongoClient
@@ -32,8 +33,10 @@ collection.insert_one(test)
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
-# use the default value of None
-updater = telegram.ext.Updater(API_KEY)
+update_queue = queue.Queue()
+
+# Pass the queue object as the update_queue argument
+updater = telegram.ext.Updater(API_KEY, update_queue=update_queue)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
