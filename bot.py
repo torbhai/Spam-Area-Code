@@ -117,59 +117,59 @@ def subscribe(update, context):
     context.bot.send_message(chat_id, text="Please select an option:", reply_markup=keyboard)
 
     # Define a function that handles the button clicks
-    def button(update, context):
-         # Get the callback query
-         query = update.callback_query
-         # Acknowledge the callback query
-         query.answer()
-         # Get the chat id, the username, and the option from the callback data
-         chat_id, user_name, option = query.data.split("-")
-         # Check the option
-         if option == "paid":
+def button(update, context):
+    # Get the callback query
+    query = update.callback_query
+    # Acknowledge the callback query
+    query.answer()
+    # Get the chat id, the username, and the option from the callback data
+    chat_id, user_name, option = query.data.split("-")
+    # Check the option
+    if option == "paid":
         # The user clicked the "Paid" button
         # Ask the user for the transaction hash
-             context.bot.send_message(chat_id, text="Please enter the transaction hash of your payment:")
+        context.bot.send_message(chat_id, text="Please enter the transaction hash of your payment:")
         # Define a function that handles the transaction hash
-             def tx_hash(update, context):
+        def tx_hash(update, context):
             # Get the transaction hash from the user
-                 tx_hash = update.message.text
+            tx_hash = update.message.text
             # Create a key object from the address
-                 key = bitcoinlib.keys.Key(address=address.address)
+            key = bitcoinlib.keys.Key(address=address.address)
             # Create a transaction object from the transaction hash
-                 tx = bitcoinlib.transactions.Transaction.import_raw(tx_hash, network="bitcoin")
+            tx = bitcoinlib.transactions.Transaction.import_raw(tx_hash, network="bitcoin")
             # Get the number of confirmations and the amount of the transaction
-                 confirmations = tx.confirmations()
-                 amount = tx.output_total(key)
+            confirmations = tx.confirmations()
+            amount = tx.output_total(key)
             # Check if the transaction is valid
-                 if confirmations > 0 and amount >= btc_amount:
+            if confirmations > 0 and amount >= btc_amount:
                 # The transaction is valid
                 # Check if the transaction has at least 2 confirmations
-                     if confirmations >= 2:
+                if confirmations >= 2:
                     # The transaction has enough confirmations
                     # Get the current date and the expiration date
-                         current_date = datetime.date.today()
-                         expiration_date = current_date + datetime.timedelta(days=30)
+                    current_date = datetime.date.today()
+                    expiration_date = current_date + datetime.timedelta(days=30)
                     # Update the MongoDB database with the user's subscription status and expiration date
-                         collection.update_one({"chat_id": chat_id}, {"$set": {"status": "premium", "expiration_date": expiration_date}})
+                    collection.update_one({"chat_id": chat_id}, {"$set": {"status": "premium", "expiration_date": expiration_date}})
                     # Send a confirmation message to the user
-                         context.bot.send_message(chat_id, text=f"Thank you for your payment, {user_name}! You are now a premium user until {expiration_date}. Enjoy the bot!")
+                    context.bot.send_message(chat_id, text=f"Thank you for your payment, {user_name}! You are now a premium user until {expiration_date}. Enjoy the bot!")
                 else:
                     # The transaction does not have enough confirmations
                     # Send a message to the user informing them that they need to wait for more confirmations
                     context.bot.send_message(chat_id, text=f"Your payment is pending confirmation. Please wait until it has at least 2 confirmations. You can check the status of your transaction [here](https://stackoverflow.com/questions/67930142/how-can-i-add-custom-command-using-python-telegram-bot).")
-        else:
+            else:
                 # The transaction is invalid
                 # Send an error message to the user
-        context.bot.send_message(chat_id, text="Invalid transaction. Please make sure you have sent the correct amount to the correct address and that your transaction has at least 1 confirmation.")
+                context.bot.send_message(chat_id, text="Invalid transaction. Please make sure you have sent the correct amount to the correct address and that your transaction has at least 1 confirmation.")
         # Create a message handler for the transaction hash
         tx_hash_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, tx_hash)
         # Add the handler to the dispatcher
         dispatcher.add_handler(tx_hash_handler)
-          elif option == "cancel":
+    elif option == "cancel":
         # The user clicked the "Cancel" button
         # Edit the message that contains the keyboard
         query.edit_message_text(text="You have canceled the payment process. You can use the /subscribe command again if you change your mind.")
-          else:
+    else:
         # The user clicked an unknown button
         # Send an error message to the user
         context.bot.send_message(chat_id, text="Unknown option. Please try again.")
