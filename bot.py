@@ -6,7 +6,6 @@ import telegram.ext
 import pymongo
 from pymongo import MongoClient
 import requests
-import pycoin.key.key_from_text
 import pycoin.services
 
 # Replace the connection string with your own
