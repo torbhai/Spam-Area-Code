@@ -29,10 +29,6 @@ test = {"chat_id": "6950394833",
 # Insert the document into the collection
 collection.insert_one(test)
 
-
-# The API Key we received for our bot
-API_KEY = os.environ.get('BOT_TOKEN')
-
 update_queue = queue.Queue()
 
 # Pass the queue object as the update_queue argument
