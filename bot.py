@@ -38,8 +38,6 @@ update_queue = queue.Queue()
 # Pass the queue object as the update_queue argument
 updater = telegram.ext.Updater(API_KEY, update_queue=update_queue)
 
-# Retrieve the dispatcher, which will be used to add handlers
-dispatcher = updater.dispatcher
 
 # Create a dictionary of banks and their area codes from the table
 banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 980, 702, 725, 904, 415, 628, 305, 786, 404, 470, 678, 770, 215, 267, 445, 480, 602, 623, 928],
