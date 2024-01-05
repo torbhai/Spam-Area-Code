@@ -7,9 +7,6 @@ import telegram.ext
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
-# Create a bot instance with our API Key
-bot = telebot.TeleBot(API_KEY)
-
 # use the default value of None
 updater = telegram.ext.Updater(API_KEY)
 
@@ -33,7 +30,7 @@ banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 
 # Define a function that handles the /start command
 def start(update, context):
     # Send a welcome message to the user
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name.")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name. Created by @TheLogman")
 
 # Define a function that handles any text message
 def text(update, context):
