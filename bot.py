@@ -1,11 +1,9 @@
 # Import the required libraries
 import os
-import telegram.ext
 import telebot
 from telegram.ext import Updater
 from queue import Queue
-from telegram import Bot
-
+import telegram.ext
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
@@ -35,12 +33,7 @@ banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 
 # Define a function that handles the /start command
 def start(update, context):
     # Send a welcome message to the user
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name or select one of the buttons below.")
-    # Create a reply keyboard markup with the buttons
-    reply_keyboard = [["Wells", "Chase"], ["Manual Input", "Stop"]]
-    reply_markup = telegram.ext.ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-    # Send the keyboard to the user
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Please choose an option:", reply_markup=reply_markup)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name.")
 
 # Define a function that handles any text message
 def text(update, context):
@@ -56,41 +49,18 @@ def text(update, context):
         line = ", ".join(str(code) for code in area_codes)
         # Send the line to the user
         context.bot.send_message(chat_id=update.effective_chat.id, text="The area codes for " + bank_name + " are: " + line)
-    elif bank_name == "Manual Input":
-        # Send a message to the user to type a bank name
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Please type a bank name.")
-    elif bank_name == "Stop":
-        # Call the stop function to stop the bot
-        stop(update, context)
-    elif bank_name == "":
-        # Send an error message to the user if the message is empty
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Please type a bank name or select a button.")
     else:
-        # Send an error message to the user if the bank name is invalid
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again or select a button.")
-
-# Define a function that handles the /stop command
-def stop(update, context):
-    # Send a goodbye message to the user
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you for using this bot. Goodbye.")
-    # Remove the reply keyboard from the user
-    reply_markup = telegram.ext.ReplyKeyboardRemove()
-    context.bot.send_message(chat_id=update.effective_chat.id, text="The keyboard has been removed.", reply_markup=reply_markup)
-    # Stop the bot from polling for updates
-    updater.stop()
+        # Send an error message to the user
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
 
 # Create a command handler for the /start command
 start_handler = telegram.ext.CommandHandler('start', start)
-
-# Create a command handler for the /stop command
-stop_handler = telegram.ext.CommandHandler('stop', stop)
 
 # Create a message handler for any text message
 text_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, text)
 
 # Add the handlers to the dispatcher
 dispatcher.add_handler(start_handler)
-dispatcher.add_handler(stop_handler)
 dispatcher.add_handler(text_handler)
 
 # Start polling for updates
