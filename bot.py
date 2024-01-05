@@ -6,7 +6,6 @@ import telegram.ext
 import pymongo
 from pymongo import MongoClient
 import requests
-import bitcoinlib
 
 
 # Replace the connection string with your own
