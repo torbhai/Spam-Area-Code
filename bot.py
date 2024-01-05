@@ -6,7 +6,8 @@ import telegram.ext
 import pymongo
 from pymongo import MongoClient
 import requests
-
+import pycoin.key.key_from_text
+import pycoin.services
 
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
@@ -130,15 +131,20 @@ def button(update, context):
         context.bot.send_message(chat_id, text="Please enter the transaction hash of your payment:")
         # Define a function that handles the transaction hash
         def tx_hash(update, context):
-            # Get the transaction hash from the user
-            tx_hash = update.message.text
             # Create a key object from the address
-            key = bitcoinlib.keys.Key(address=address.address)
-            # Create a transaction object from the transaction hash
-            tx = bitcoinlib.transactions.Transaction.import_raw(tx_hash, network="bitcoin")
-            # Get the number of confirmations and the amount of the transaction
-            confirmations = tx.confirmations()
-            amount = tx.output_total(key)
+            key = pycoin.key.key_from_text(address)  # Assuming 'address' is a valid Bitcoin address
+            # Fetch transaction details using a blockchain explorer API (replace with your preferred service)
+            explorer = pycoin.services.BlockchainInfoProvider("YOUR_API_KEY")  # Replace with your API key
+            tx_data = explorer.get_tx_by_hash(tx_hash)
+s
+            # Create a transaction object from the fetched data
+            tx = pycoin.tx.Tx.from_hex(tx_data)
+
+            # Get the number of confirmations (approximate)
+            confirmations = tx.block_height  # Assuming block height is available in fetched data
+
+            # Calculate the transaction amount for the specified key
+            amount = sum(output.value for output in tx.txs_out if output.address == key.address)
             # Check if the transaction is valid
             if confirmations > 0 and amount >= btc_amount:
                 # The transaction is valid
