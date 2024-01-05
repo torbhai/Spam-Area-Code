@@ -3,6 +3,31 @@ import os
 from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
+import pymongo
+from pymongo import MongoClient
+
+# Replace the connection string with your own
+connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
+
+# Access the database
+db = client.test
+
+# Access the collection
+collection = "db.new collection"
+
+
+# Create a MongoClient object
+client = MongoClient(connection_string)
+
+# Create a document
+test = {"chatid": "6950394833",
+        "username": "TheLogman",
+        "Status": 1979}
+
+# Insert the document into the collection
+collection.insert_one(test)
+
+
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
