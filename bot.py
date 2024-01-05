@@ -1,6 +1,5 @@
 # Import the required libraries
 import os
-import telebot
 from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
