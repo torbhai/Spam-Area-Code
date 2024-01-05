@@ -1,5 +1,6 @@
 # Import the required libraries
 import os
+import telebot
 from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
@@ -44,7 +45,7 @@ def text(update, context):
         # Join the list elements with commas
         line = ", ".join(str(code) for code in area_codes)
         # Send the line to the user
-        context.bot.send_message(chat_id=update.effective_chat.id, text="The area codes for " + bank_name + " are: " + line)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"The area codes for {bank_name} are: {line}")
     else:
         # Send an error message to the user
         context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
