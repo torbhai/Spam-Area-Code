@@ -138,7 +138,6 @@ def button(update, context):
             tx_data = explorer.get_tx_by_hash(tx_hash)
             # Create a transaction object from the fetched data
             tx = pycoin.tx.Tx.from_hex(tx_data)
-
             # Get the number of confirmations (approximate)
             confirmations = tx.block_height  # Assuming block height is available in fetched data
 
