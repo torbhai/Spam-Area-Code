@@ -184,15 +184,15 @@ button_handler = telegram.ext.CallbackQueryHandler(button)
 # Add the handler to the dispatcher
 dispatcher.add_handler(button_handler)
 
-# Create a command handler for the /start command
-start_handler = telegram.ext.CommandHandler('start', start)
+# Define an async function to handle /start command
+async def start_command (update, context):
+  await update.message.reply_text ('its a leads tool by @TheLogman')
 
-# Create a message handler for any text message
-text_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, text)
+# Initialize the Telegram bot application and token
+application = telegram.ext.Application.builder ().token ('API_KEY').build ()
 
-# Add the handlers to the dispatcher
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(text_handler)
+# Add command handler
+application.add_handler (telegram.ext.CommandHandler ('start', start_command))
 
-# Start polling for updates
-updater.start_polling()
+# Run the Telegram bot application
+application.run_polling (1.0)
