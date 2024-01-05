@@ -179,8 +179,6 @@ def button(update, context):
 
 # Create a handler for the button clicks
 button_handler = telegram.ext.CallbackQueryHandler(button)
-# Add the handler to the dispatcher
-dispatcher.add_handler(button_handler)
 
 # Define an async function to handle /start command
 async def start_command (update, context):
