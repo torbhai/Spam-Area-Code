@@ -153,7 +153,7 @@ def subscribe(update, context):
                          collection.update_one({"chat_id": chat_id}, {"$set": {"status": "premium", "expiration_date": expiration_date}})
                     # Send a confirmation message to the user
                          context.bot.send_message(chat_id, text=f"Thank you for your payment, {user_name}! You are now a premium user until {expiration_date}. Enjoy the bot!")
-                  else:
+                else:
                     # The transaction does not have enough confirmations
                     # Send a message to the user informing them that they need to wait for more confirmations
                     context.bot.send_message(chat_id, text=f"Your payment is pending confirmation. Please wait until it has at least 2 confirmations. You can check the status of your transaction [here](https://stackoverflow.com/questions/67930142/how-can-i-add-custom-command-using-python-telegram-bot).")
