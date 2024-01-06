@@ -1,31 +1,28 @@
 # Import the required libraries
 import os
 from telegram.ext import Updater
+from queue import Queue
 import telegram.ext
 import pymongo
 from pymongo import MongoClient
-from asyncio import queues
-from asyncio.queues import Queue
-import queue
-
-
 
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
-
-# Create a MongoClient object
-client = MongoClient(connection_string)
 
 # Access the database
 db = client.test
 
 # Access the collection
-collection = db["new collection"]
+collection = "db.new collection"
+
+
+# Create a MongoClient object
+client = MongoClient(connection_string)
 
 # Create a document
-test = {"chat_id": "6950394833",
-        "user_name": "TheLogman",
-        "status": "premium"}
+test = {"chatid": "6950394833",
+        "username": "TheLogman",
+        "Status": 1979}
 
 # Insert the document into the collection
 collection.insert_one(test)
@@ -33,9 +30,9 @@ collection.insert_one(test)
 
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
-my_queue = queue.Queue()
-updater = telegram.ext.Updater(bot, my_queue)
 
+# use the default value of None
+updater = telegram.ext.Updater(API_KEY)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
@@ -60,28 +57,32 @@ def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name. Created by @TheLogman")
 
 # Define a function that handles any text message
-# Define a function that handles any text message
 def text(update, context):
     # Get the text message from the user
     bank_name = update.message.text
-    # Get the chat id of the user
-    chat_id = update.message.chat.id
-    # Query the collection to find the document that matches the chat id
-    user = collection.find_one({"chat_id": chat_id})
-    # Check if the user is a premium user or not
-    if user and user.get("status") == "premium":
-        # The user is a premium user, execute the existing code
-        # Check if the bank name is valid and in the dictionary
-        if bank_name in banks:
-            # Get the list of area codes for the bank
-            area_codes = banks[bank_name]
-            # Join the list elements with commas
-            line = ", ".join(str(code) for code in area_codes)
-            # Send the line to the user
-            context.bot.send_message(chat_id=update.effective_chat.id, text=f"The area codes for {bank_name} are: {line}")
-        else:
-            # Send an error message to the user
-            context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
+    # Check if the bank name is valid and in the dictionary
+    if bank_name in banks:
+        # Get the list of area codes for the bank
+        area_codes = banks[bank_name]
+        # Sort the list in ascending order
+        area_codes.sort()
+        # Join the list elements with commas
+        line = ", ".join(str(code) for code in area_codes)
+        # Send the line to the user
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"The area codes for {bank_name} are: {line}")
     else:
-        # The user is not a premium user, send a message to the user informing them that they need to subscribe to use the bot
-        context.bot.s
+        # Send an error message to the user
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
+
+# Create a command handler for the /start command
+start_handler = telegram.ext.CommandHandler('start', start)
+
+# Create a message handler for any text message
+text_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, text)
+
+# Add the handlers to the dispatcher
+dispatcher.add_handler(start_handler)
+dispatcher.add_handler(text_handler)
+
+# Start polling for updates
+updater.start_polling()
