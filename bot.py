@@ -6,6 +6,8 @@ import pymongo
 from pymongo import MongoClient
 from asyncio import queues
 from asyncio.queues import Queue
+import queue
+
 
 
 # Replace the connection string with your own
