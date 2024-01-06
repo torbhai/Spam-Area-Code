@@ -9,13 +9,10 @@ from pymongo import MongoClient
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
 
-client = MongoClient("localhost", 27017) # define client as an instance of MongoClient
+client = MongoClient("viaduct.proxy.rlwy.net", 45701) # define client as an instance of MongoClient
 db = client.test # access the test database
 
 collection = db.test # access the test collection
-test = {"name": "Alice", "age": 25} # define a document to insert
-collection.insert_one(test)
-
 
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
