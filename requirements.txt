@@ -3,3 +3,4 @@ telegram
 pymongo
 requests
 pycoin
+--upgrade
