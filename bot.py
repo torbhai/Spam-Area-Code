@@ -1,11 +1,9 @@
 # Import the required libraries
 import os
-from queue import Queue
 import telegram.ext
-import pymongo
 from telegram.ext import Updater, CommandHandler
+import pymongo
 from pymongo import MongoClient
-import queue
 
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
@@ -16,11 +14,14 @@ db = client.test # access the test database
 collection = db.test # access the test collection
 
 # The API Key we received for our bot
-API_KEY = os.environ.get('BOT_TOKEN')
+try:
+    API_KEY = os.environ['BOT_TOKEN']
+except KeyError:
+    print("Please set the BOT_TOKEN environment variable")
+    exit(1)
 
-my_queue = queue.Queue()
-updater = Updater(API_KEY, update_queue=my_queue)
-
+# Create an Updater object with your bot token
+updater = Updater(API_KEY)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
@@ -60,10 +61,10 @@ def text(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
 
 # Create a command handler for the /start command
-start_handler = telegram.ext.CommandHandler('start', start)
+start_handler = CommandHandler('start', start)
 
 # Create a message handler for any text message
-text_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, text)
+text_handler = MessageHandler(Filters.text, text)
 
 # Add the handlers to the dispatcher
 dispatcher.add_handler(start_handler)
@@ -71,8 +72,6 @@ dispatcher.add_handler(text_handler)
 
 # Start polling for updates
 updater.start_polling()
-updater.dispatcher.add_handler(CommandHandler("start", start))
 
-# start the bot
-updater.start_polling()
+# Idle the bot
 updater.idle()
