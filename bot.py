@@ -5,6 +5,8 @@ from queue import Queue
 import telegram.ext
 import pymongo
 from pymongo import MongoClient
+from telegram.ext import ApplicationBuilder
+
 
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
@@ -29,9 +31,9 @@ collection.insert_one(test)
 
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
+app = ApplicationBuilder(bot)
+updater = app.updater
 
-# use the default value of None
-updater = telegram.ext.Updater(API_KEY)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
