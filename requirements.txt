@@ -1,5 +1,5 @@
 python-telegram-bot
-telegramk
+telegram
 pymongo
 requests
 pycoin
