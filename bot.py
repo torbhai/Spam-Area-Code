@@ -12,7 +12,7 @@ connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.pr
 client = MongoClient("localhost", 27017) # define client as an instance of MongoClient
 db = client.test # access the test database
 
-#collection = db.test # access the test collection
+collection = db.test # access the test collection
 test = {"name": "Alice", "age": 25} # define a document to insert
 collection.insert_one(test)
 
