@@ -4,7 +4,7 @@ from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
 import pymongo
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, Dispatcher, CommandHandler
 from pymongo import MongoClient
 import queue
 
