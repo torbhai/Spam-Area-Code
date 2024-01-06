@@ -4,6 +4,7 @@ from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
 import pymongo
+from telegram.ext import Updater, CommandHandler
 from pymongo import MongoClient
 
 # Replace the connection string with your own
@@ -18,7 +19,7 @@ collection = db.test # access the test collection
 API_KEY = os.environ.get('BOT_TOKEN')
 
 # use the default value of None
-updater = telegram.ext.Updater(API_KEY)
+updater = Updater(API_KEY, use_context=True)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
