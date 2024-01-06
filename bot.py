@@ -19,8 +19,9 @@ collection = db.test # access the test collection
 # The API Key we received for our bot
 API_KEY = os.environ.get('BOT_TOKEN')
 
-# use the default value of None
-updater = Updater(API_KEY)
+my_queue = queue.Queue()
+updater = Updater(API_KEY, update_queue=my_queue)
+
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
