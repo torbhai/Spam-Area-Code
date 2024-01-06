@@ -1,11 +1,9 @@
 # Import the required libraries
 import os
-from telegram.ext import Updater
 from queue import Queue
 import telegram.ext
 import pymongo
 from telegram.ext import Updater, CommandHandler
-from telegram import Dispatcher
 from pymongo import MongoClient
 import queue
 
