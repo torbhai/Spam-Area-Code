@@ -9,8 +9,8 @@ from pymongo import MongoClient
 # Replace the connection string with your own
 connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
 
-# Access the database
-db = client.test
+client = MongoClient("localhost", 27017) # define client as an instance of MongoClient
+db = client.test # access the test database
 
 # Access the collection
 collection = "db.new collection"
