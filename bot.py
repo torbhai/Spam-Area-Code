@@ -19,7 +19,7 @@ collection = db.test # access the test collection
 API_KEY = os.environ.get('BOT_TOKEN')
 
 # use the default value of None
-updater = Updater(API_KEY, use_context=True)
+updater = Updater(API_KEY)
 
 # Retrieve the dispatcher, which will be used to add handlers
 dispatcher = updater.dispatcher
@@ -38,11 +38,8 @@ banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 
          "Citi Bank": [212, 332, 347, 646, 718, 917, 929, 213, 310, 323, 424, 626, 818, 312, 630, 708, 773, 847, 872, 415, 628, 305, 786, 202, 617, 857, 619, 760, 858, 281, 346, 713, 832, 214, 469, 682, 817, 972]
          }
 
-# Define a function that handles the /start command
 def start(update, context):
-    # Send a welcome message to the user
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, this is a bot that can tell you the area codes for different banks in the US. To use it, just type the bank name. Created by @TheLogman")
-
+    update.message.reply_text("This Bot is Created By @TheLogman For getting fresh spamable area codes for all banks using machine learning and Artificial Inteligence So you guys can get high quality area codes")
 # Define a function that handles any text message
 def text(update, context):
     # Get the text message from the user
@@ -73,3 +70,8 @@ dispatcher.add_handler(text_handler)
 
 # Start polling for updates
 updater.start_polling()
+updater.dispatcher.add_handler(CommandHandler("start", start))
+
+# start the bot
+updater.start_polling()
+updater.idle()
