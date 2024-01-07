@@ -1,77 +1,75 @@
-# Import the required libraries
-import os
-import telegram.ext
-from telegram.ext import Updater, CommandHandler
-import pymongo
-from pymongo import MongoClient
+import requests
+import telegram
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-# Replace the connection string with your own
-connection_string = "mongodb://mongo:6bHFBAd2fEg5d-ce-aeEGfAAG5b5a2Hb@viaduct.proxy.rlwy.net:45701"
+# Replace with your own API key and base URL from https://goo.by/telegram-url-shortener-bot
+API_KEY = "your-api-key-here"
+BASE_URL = "https://goo.by/shorten"
 
-client = MongoClient("viaduct.proxy.rlwy.net", 45701) # define client as an instance of MongoClient
-db = client.test # access the test database
+# Replace with your own bot token from @BotFather
+BOT_TOKEN = "your-bot-token-here"
 
-collection = db.test # access the test collection
+# Replace with your own IP address for the custom domain
+IP_ADDRESS = "your-ip-address-here"
 
-# The API Key we received for our bot
-try:
-    API_KEY = os.environ['BOT_TOKEN']
-except KeyError:
-    print("Please set the BOT_TOKEN environment variable")
-    exit(1)
+# Create a bot instance
+bot = telegram.Bot(token=BOT_TOKEN)
 
-# Create an Updater object with your bot token
-updater = Updater(API_KEY)
+# Create an updater instance
+updater = Updater(token=BOT_TOKEN, use_context=True)
 
-# Retrieve the dispatcher, which will be used to add handlers
-dispatcher = updater.dispatcher
-
-# Create a dictionary of banks and their area codes from the table
-banks = {"Wells Fargo": [281, 346, 713, 832, 213, 310, 323, 424, 626, 818, 704, 980, 702, 725, 904, 415, 628, 305, 786, 404, 470, 678, 770, 215, 267, 445, 480, 602, 623, 928],
-         "Chase": [212, 332, 347, 646, 718, 917, 929, 312, 630, 708, 773, 847, 872, 213, 310, 323, 424, 626, 818, 281, 346, 713, 832, 214, 469, 682, 817, 972, 210, 726, 480, 602, 623, 928, 619, 760, 858, 415, 628, 614, 380],
-         "TD Bank": [212, 332, 347, 646, 718, 917, 929, 215, 267, 445, 617, 857, 305, 786, 202, 862, 973, 201, 551, 410, 443, 667, 754, 954],
-         "Truist": [704, 980, 404, 470, 678, 770, 919, 984, 336, 321, 407, 813, 804, 305, 786, 904],
-         "USAA": [210, 726, 719, 720, 480, 602, 623, 928, 813, 214, 469, 682, 817, 972, 410, 443, 667, 512, 737, 757, 948, 845],
-         "NFCU": [571, 703, 619, 760, 858, 850, 904, 757, 948, 808, 202],
-         "wells": [505, 206, 702, 619, 408, 503, 559, 801, 323, 916, 253],
-         "chase": [313, 202, 646, 323, 347, 317, 408, 626, 254, 719, 732, 718, 856, 201],
-         "AFCU": [385, 801, 435, 656],
-         "ENT": [719, 720, 303, 719],
-         "Citi Bank": [212, 332, 347, 646, 718, 917, 929, 213, 310, 323, 424, 626, 818, 312, 630, 708, 773, 847, 872, 415, 628, 305, 786, 202, 617, 857, 619, 760, 858, 281, 346, 713, 832, 214, 469, 682, 817, 972]
-         }
-
+# Define a function to handle the /start command
 def start(update, context):
-    update.message.reply_text("This Bot is Created By @TheLogman For getting fresh spamable area codes for all banks using machine learning and Artificial Inteligence So you guys can get high quality area codes")
-# Define a function that handles any text message
+    # Send a welcome message
+    update.message.reply_text("Hello, I am a URL shortener bot. I can help you create short URLs with a custom domain. To get started, please send me your custom domain name.")
+
+# Define a function to handle the /help command
+def help(update, context):
+    # Send a help message
+    update.message.reply_text("Here are the steps to use this bot:\n1. Send me your custom domain name.\n2. I will give you an IP address to update on your DNS record.\n3. Send me the main URL that you want to shorten.\n4. I will send you the shortened URL with your custom domain.")
+
+# Define a function to handle text messages
 def text(update, context):
     # Get the text message from the user
-    bank_name = update.message.text
-    # Check if the bank name is valid and in the dictionary
-    if bank_name in banks:
-        # Get the list of area codes for the bank
-        area_codes = banks[bank_name]
-        # Sort the list in ascending order
-        area_codes.sort()
-        # Join the list elements with commas
-        line = ", ".join(str(code) for code in area_codes)
-        # Send the line to the user
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"The area codes for {bank_name} are: {line}")
+    text = update.message.text
+
+    # Check if the text is a valid domain name
+    if text.endswith(".com") or text.endswith(".net") or text.endswith(".org"):
+        # Store the domain name in the user data
+        context.user_data["domain"] = text
+        # Send the IP address to update on the DNS record
+        update.message.reply_text(f"OK, your custom domain name is {text}. Please update your DNS record with this IP address: {IP_ADDRESS}. Then send me the main URL that you want to shorten.")
+    # Check if the text is a valid URL
+    elif text.startswith("http://") or text.startswith("https://"):
+        # Get the domain name from the user data
+        domain = context.user_data.get("domain")
+        # Check if the domain name is set
+        if domain:
+            # Shorten the URL using the API
+            payload = {"long_url": text, "api_key": API_KEY, "domain": domain}
+            response = requests.post(BASE_URL, data=payload)
+            # Check if the response is successful
+            if response.status_code == 200:
+                # Get the shortened URL from the response
+                short_url = response.text
+                # Send the shortened URL to the user
+                update.message.reply_text(f"Here is your shortened URL: {short_url}")
+            else:
+                # Send an error message
+                update.message.reply_text(f"Sorry, something went wrong. Please try again later.")
+        else:
+            # Send a reminder message
+            update.message.reply_text("Please send me your custom domain name first.")
     else:
-        # Send an error message to the user
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid bank name. Please try again.")
+        # Send an invalid message
+        update.message.reply_text("Please send me a valid domain name or URL.")
+        
+# Add handlers to the dispatcher
+dispatcher = updater.dispatcher
+dispatcher.add_handler(CommandHandler("start", start))
+dispatcher.add_handler(CommandHandler("help", help))
+dispatcher.add_handler(MessageHandler(Filters.text, text))
 
-# Create a command handler for the /start command
-start_handler = CommandHandler('start', start)
-
-# Create a message handler for any text message
-text_handler = MessageHandler(Filters.text, text)
-
-# Add the handlers to the dispatcher
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(text_handler)
-
-# Start polling for updates
+# Start the bot
 updater.start_polling()
-
-# Idle the bot
 updater.idle()
