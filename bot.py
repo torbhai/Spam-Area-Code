@@ -1,6 +1,6 @@
 import requests
 import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters
 
 # Replace with your own API key and base URL from https://goo.by/telegram-url-shortener-bot
 API_KEY = "your-api-key-here"
