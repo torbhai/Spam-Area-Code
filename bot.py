@@ -3,11 +3,8 @@ import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, filters
 
 # Replace with your own API key and base URL from https://goo.by/telegram-url-shortener-bot
-API_KEY = "your-api-key-here"
+API_KEY = "3f423f33015e1a8f6bb7"
 BASE_URL = "https://goo.by/shorten"
-
-# Replace with your own bot token from @BotFather
-BOT_TOKEN = "your-bot-token-here"
 
 # Replace with your own IP address for the custom domain
 IP_ADDRESS = "your-ip-address-here"
