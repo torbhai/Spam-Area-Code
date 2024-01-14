@@ -3,50 +3,39 @@ import telebot
 import requests
 import random
 import os
+import telebot
+import requests
+import random
+import os
+import time  # Added for timestamp
 
-# Define the constants
-BOT_TOKEN = os.environ["BOT_TOKEN"] # Get the bot token from the environment variable
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"] # Get the OpenAI API key from the environment variable
-COUNTRY_CODE = "+1" # USA country code
-TEMPERATURE = 0.6 # The temperature for the ChatGPT model
-MAX_TOKENS = 100 # The maximum number of tokens for the ChatGPT model
+# ... (previous code remains the same)
 
-# Create the bot object
-bot = telebot.TeleBot(BOT_TOKEN)
-
-# Initialize the dictionaries
-waiting_for_bank_name = {}
-waiting_for_num_leads = {}
-
-# Define the message handler for the /start and /help commands
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
-    # Send a welcome message and ask the user to enter the name of the bank
-    bot.reply_to(message, "Welcome to the Bank Number Leads Bot! Please enter the name of the bank.")
-
-# Define the message handler for text messages
+# Modified message handlers with enhanced tracking and handling interruptions:
 @bot.message_handler(content_types=["text"])
 def ask_bank_name(message):
-    # Get the chat id
     chat_id = message.chat.id
-    # Check if the chat id is in the waiting_for_bank_name dictionary
-    if chat_id in waiting_for_bank_name:
-        # Ask the user to enter the name of the bank
+    if chat_id in waiting_for_bank_name and time.time() - waiting_for_bank_name[chat_id] > 60:  # Re-prompt if no response in 60 seconds
         bot.reply_to(message, "Please enter the name of the bank:")
-# Define another message handler for text messages
-@bot.message_handler(content_types=["text"])
+    else:
+        waiting_for_bank_name[chat_id] = time.time()  # Store timestamp
+
+@bot.message_handler(func=lambda message: message.reply_to_message and message.reply_to_message.text == "Please enter the name of the bank:")
 def store_bank_name(message):
-    # Get the chat id and the bank name
     chat_id = message.chat.id
     bank_name = message.text
-    # Check if the chat id is in the waiting_for_bank_name dictionary
-    if chat_id in waiting_for_bank_name:
-        # Remove the chat id from the waiting_for_bank_name dictionary
-        waiting_for_bank_name.pop(chat_id, None)
-        # Store the bank name in the waiting_for_num_leads dictionary
-        waiting_for_num_leads[chat_id] = bank_name
-        # Ask the user to enter the number of leads
-        bot.reply_to(message, "Please enter the number of leads:")
+    waiting_for_bank_name.pop(chat_id, None)  # Remove from waiting dictionary
+    waiting_for_num_leads[chat_id] = bank_name
+    bot.reply_to(message, "Please enter the number of leads:")
+
+@bot.message_handler(content_types=["text"])
+def handle_interruptions(message):
+    chat_id = message.chat.id
+    if chat_id in waiting_for_bank_name and message.text != bank_name:  # Check if user is interrupting
+        bot.reply_to(message, "Please provide the bank name first to continue.")
+
+# ... (rest of the code remains the same)
+
 
 # Define a final message handler for messages that contain numbers
 @bot.message_handler(regexp="^[0-9]+$")
