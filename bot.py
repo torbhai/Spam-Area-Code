@@ -39,7 +39,7 @@ def ask_bank_name(message):
 
 # Define another message handler for text messages
 @bot.message_handler(content_types=["text"])
-def ask_num_leads(message):
+def store_bank_name(message):
     # Get the chat id and the bank name
     chat_id = message.chat.id
     bank_name = message.text
