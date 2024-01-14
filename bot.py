@@ -6,7 +6,7 @@ import os
 
 # Define the constants
 BOT_TOKEN = os.environ["BOT_TOKEN"] # Get the bot token from the environment variable
-OPENAI_API_KEY = "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" 
+OPENAI_API_KEY = "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" 
 COUNTRY_CODE = "+1" # USA country code
 TEMPERATURE = 0.6 # The temperature for the ChatGPT model
 MAX_TOKENS = 100 # The maximum number of tokens for the ChatGPT model
