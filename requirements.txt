@@ -1,5 +1,2 @@
-python-telegram-bot
-telegram
-pymongo
-requests
-pycoin
+requests==2.26.0
+telebot==0.0.5
