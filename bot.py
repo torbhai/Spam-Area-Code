@@ -6,7 +6,7 @@ import os
 
 # Define the constants
 BOT_TOKEN = os.environ["BOT_TOKEN"] # Get the bot token from the environment variable
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"] # Get the OpenAI API key from the environment variable
 COUNTRY_CODE = "+1" # USA country code
 TEMPERATURE = 0.6 # The temperature for the ChatGPT model
 MAX_TOKENS = 100 # The maximum number of tokens for the ChatGPT model
@@ -31,10 +31,10 @@ def generate_number_leads(message):
     try:
         # Make a request to the ChatGPT model
         response = requests.post(
-            "https://api.openai.com/v1/chat/completions",
+            "https://api.openai.com/v1/engines/davinci-codex/completions",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": "Bearer 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"
+                "Authorization": f"Bearer {OPENAI_API_KEY}"
             },
             json={
                 "prompt": f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:",
