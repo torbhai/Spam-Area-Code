@@ -33,10 +33,6 @@ def ask_bank_name(message):
     if chat_id in waiting_for_bank_name:
         # Ask the user to enter the name of the bank
         bot.reply_to(message, "Please enter the name of the bank:")
-    else:
-        # Store the chat id in the waiting_for_bank_name dictionary
-        waiting_for_bank_name[chat_id] = True
-
 # Define another message handler for text messages
 @bot.message_handler(content_types=["text"])
 def store_bank_name(message):
