@@ -24,8 +24,8 @@ def send_welcome(message):
     # Send a welcome message and ask the user to enter the name of the bank
     bot.reply_to(message, "Welcome to the Bank Number Leads Bot! Please enter the name of the bank.")
 
-# Define the message handler for any message
-@bot.message_handler(func=lambda message: True)
+# Define the message handler for text messages
+@bot.message_handler(content_types=["text"])
 def ask_bank_name(message):
     # Get the chat id
     chat_id = message.chat.id
@@ -37,8 +37,8 @@ def ask_bank_name(message):
         # Store the chat id in the waiting_for_bank_name dictionary
         waiting_for_bank_name[chat_id] = True
 
-# Define another message handler for any message
-@bot.message_handler(func=lambda message: True)
+# Define another message handler for text messages
+@bot.message_handler(content_types=["text"])
 def ask_num_leads(message):
     # Get the chat id and the bank name
     chat_id = message.chat.id
@@ -52,8 +52,8 @@ def ask_num_leads(message):
         # Ask the user to enter the number of leads
         bot.reply_to(message, "Please enter the number of leads:")
 
-# Define a final message handler for any message
-@bot.message_handler(func=lambda message: True)
+# Define a final message handler for messages that contain numbers
+@bot.message_handler(regexp="^[0-9]+$")
 def generate_number_leads(message):
     # Get the chat id and the number of leads
     chat_id = message.chat.id
