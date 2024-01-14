@@ -2,12 +2,12 @@ import telebot
 import requests
 import random
 
-bot_token = "YOUR_TELEGRAM_BOT_TOKEN"
+bot_token = "6970286006:AAEOz3ky8GrSp0UfaRbIOv6ueVSM0KSr-Y4"
 bot = telebot.TeleBot(bot_token)
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    bot.reply_to(message, "Welcome to the Bank Number Leads Bot! Please enter the name of the bank and the desired number of leads.")
+    bot.reply_to(message, "Welcome to Spamicode Bank Number Leads Bot Created by @TheLogman! Please enter the name of the bank and the desired number of leads.")
 
 @bot.message_handler(func=lambda message: True)
 def generate_number_leads(message):
@@ -22,7 +22,7 @@ def generate_number_leads(message):
         "https://api.openai.com/v1/engines/davinci-codex/completions",
         headers={
             "Content-Type": "application/json",
-            "Authorization": "Bearer YOUR_OPENAI_API_KEY"
+            "Authorization": "Bearer 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"
         },
         json={
             "prompt": f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:",
