@@ -34,7 +34,7 @@ def generate_number_leads(message):
             "https://api.openai.com/v1/chat/completions",
             headers={
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {OPENAI_API_KEY}"
+                "Authorization": "Bearer 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"
             },
             json={
                 "prompt": f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:",
