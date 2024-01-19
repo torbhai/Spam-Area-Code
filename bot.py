@@ -7,11 +7,11 @@ import os
 # Import the transformers classes
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Define the constants
-BOT_TOKEN = os.environ["BOT_TOKEN"] # Get the bot token from the environment variable
-COUNTRY_CODE = "+1" # USA country code
-TEMPERATURE = 0.6 # The temperature for the Llama 2 model
-MAX_TOKENS = 100 # The maximum number of tokens for the Llama 2 model
+# Get the constants from the environment variables
+BOT_TOKEN = os.getenv("BOT_TOKEN") # Get the bot token from the environment variable
+COUNTRY_CODE = os.getenv("COUNTRY_CODE") # Get the country code from the environment variable
+TEMPERATURE = float(os.getenv("TEMPERATURE")) # Get the temperature for the Llama 2 model from the environment variable
+MAX_TOKENS = int(os.getenv("MAX_TOKENS")) # Get the maximum number of tokens for the Llama 2 model from the environment variable
 
 # Create the bot object
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -24,7 +24,7 @@ def send_welcome(message):
 
 # Define the message handler for any message
 @bot.message_handler(func=lambda message: True)
-def generate_number_leads(message):
+def generate_and_send_number_leads(message):
     # Try to split the user input into the bank name and the number of leads
     try:
         user_input = message.text.split()
@@ -40,9 +40,18 @@ def generate_number_leads(message):
         return
     # Try to generate the number leads
     try:
-        # Load the Llama 2 model and tokenizer
-        model = AutoModelForCausalLM.from_pretrained("meta/llama-2-7b-chat")
-        tokenizer = AutoTokenizer.from_pretrained("meta/llama-2-7b-chat")
+        # Try to load the Llama 2 model and tokenizer
+        try:
+            model = AutoModelForCausalLM.from_pretrained("meta/llama-2-7b-chat")
+            tokenizer = AutoTokenizer.from_pretrained("meta/llama-2-7b-chat")
+        # Catch any errors that might occur when loading the model or tokenizer
+        except (OSError, RuntimeError) as e:
+            # Log the error message
+            print(f"Error from loading the model or tokenizer: {e}")
+            # Send a feedback message to the user
+            bot.reply_to(message, "Sorry, something went wrong with loading the Llama 2 model or tokenizer. Please try again later.")
+            # Return from the function
+            return
         # Encode the prompt and generate the cities with area codes
         input_ids = tokenizer(f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:", return_tensors="pt").input_ids
         output_ids = model.generate(input_ids, max_length=MAX_TOKENS, do_sample=True, temperature=TEMPERATURE).squeeze()
