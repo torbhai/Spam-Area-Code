@@ -4,12 +4,14 @@ import requests
 import random
 import os
 
+# Import the transformers classes
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
 # Define the constants
 BOT_TOKEN = os.environ["BOT_TOKEN"] # Get the bot token from the environment variable
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 COUNTRY_CODE = "+1" # USA country code
-TEMPERATURE = 0.6 # The temperature for the ChatGPT model
-MAX_TOKENS = 100 # The maximum number of tokens for the ChatGPT model
+TEMPERATURE = 0.6 # The temperature for the Llama 2 model
+MAX_TOKENS = 100 # The maximum number of tokens for the Llama 2 model
 
 # Create the bot object
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -23,10 +25,19 @@ def send_welcome(message):
 # Define the message handler for any message
 @bot.message_handler(func=lambda message: True)
 def generate_number_leads(message):
-    # Split the user input into the bank name and the number of leads
-    user_input = message.text.split()
-    bank_name = user_input[0]
-    num_leads = int(user_input[1])
+    # Try to split the user input into the bank name and the number of leads
+    try:
+        user_input = message.text.split()
+        bank_name = user_input[0]
+        num_leads = int(user_input[1])
+    # Catch any errors that might occur if the user input is not valid
+    except (ValueError, IndexError) as e:
+        # Log the error message
+        print(f"Error from user input: {e}")
+        # Send a feedback message to the user
+        bot.reply_to(message, "Sorry, your input is not valid. Please enter the name of the bank and the desired number of leads.")
+        # Return from the function
+        return
     # Try to generate the number leads
     try:
         # Load the Llama 2 model and tokenizer
@@ -46,7 +57,7 @@ def generate_number_leads(message):
             area_code = city_with_area_code.split(":")[1].strip()
             # Generate a random phone number with the country code and the last seven digits
             last_seven_digits = str(random.randint(1000000, 9999999))
-            number = COUNTRY_CODE + area_code + last_seven_digits
+            number = f"{COUNTRY_CODE}{area_code}{last_seven_digits}"
             # Append the generated phone number to the list of number leads
             number_leads.append(number)
         # Save the list of number leads to a text file
@@ -61,6 +72,6 @@ def generate_number_leads(message):
         print(f"Error from Telegram API: {e}")
         # Send a feedback message to the user
         bot.reply_to(message, "Sorry, something went wrong with the Telegram API. Please try again later.")
-    except requests.exceptions.RequestException as e:
+
 # Start the bot polling
 bot.polling()
