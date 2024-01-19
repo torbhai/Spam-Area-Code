@@ -29,23 +29,14 @@ def generate_number_leads(message):
     num_leads = int(user_input[1])
     # Try to generate the number leads
     try:
-        # Make a request to the ChatGPT model
-        response = requests.post(
-            "https://api.openai.com/v1/chat/completions",
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {OPENAI_API_KEY}"
-            },
-            json={
-                "prompt": f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:",
-                "max_tokens": MAX_TOKENS,
-                "temperature": TEMPERATURE
-            }
-        )
-        # Check if the response is successful
-        response.raise_for_status()
-        # Parse the response and extract the generated cities with area codes
-        generated_text = response.json()["choices"][0]["text"]
+        # Load the Llama 2 model and tokenizer
+        model = AutoModelForCausalLM.from_pretrained("meta/llama-2-7b-chat")
+        tokenizer = AutoTokenizer.from_pretrained("meta/llama-2-7b-chat")
+        # Encode the prompt and generate the cities with area codes
+        input_ids = tokenizer(f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:", return_tensors="pt").input_ids
+        output_ids = model.generate(input_ids, max_length=MAX_TOKENS, do_sample=True, temperature=TEMPERATURE).squeeze()
+        # Decode the output and remove the prompt
+        generated_text = tokenizer.decode(output_ids, skip_special_tokens=True).replace(f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:", "")
         cities_with_area_codes = generated_text.split("\n")
         # Generate the number leads
         number_leads = []
@@ -70,5 +61,7 @@ def generate_number_leads(message):
         print(f"Error from Telegram API: {e}")
         # Send a feedback message to the user
         bot.reply_to(message, "Sorry, something went wrong with the Telegram API. Please try again later.")
+    except requests.exceptions.RequestException as e:
+
 # Start the bot polling
 bot.polling()
