@@ -31,7 +31,7 @@ def generate_number_leads(message):
     try:
         # Make a request to the ChatGPT model
         response = requests.post(
-            "https://api.openai.com/v1/engines/davinci-codex/completions",
+            "https://api.openai.com/v1/chat/completions",
             headers={
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {OPENAI_API_KEY}"
