@@ -10,9 +10,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # Get the constants from the environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN") # Get the bot token from the environment variable
 COUNTRY_CODE = os.getenv("COUNTRY_CODE") # Get the country code from the environment variable
-TEMPERATURE = float(os.getenv("TEMPERATURE")) # Get the temperature for the Llama 2 model from the environment variable
-MAX_TOKENS = int(os.getenv("MAX_TOKENS")) # Get the maximum number of tokens for the Llama 2 model from the environment variable
-
+TEMPERATURE = float(0.6) # Get the temperature for the Llama 2 model from the environment variable
+MAX_TOKENS = int(20000) # Get the maximum number of tokens for the Llama 2 model from the environment variable
 # Create the bot object
 bot = telebot.TeleBot(BOT_TOKEN)
 
