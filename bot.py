@@ -41,8 +41,8 @@ def generate_and_send_number_leads(message):
     try:
         # Try to load the Llama 2 model and tokenizer
         try:
-            model = AutoModelForCausalLM.from_pretrained("meta/llama-2-7b-chat")
-            tokenizer = AutoTokenizer.from_pretrained("meta/llama-2-7b-chat")
+            model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat")
+            tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat")
         # Catch any errors that might occur when loading the model or tokenizer
         except (OSError, RuntimeError) as e:
             # Log the error message
