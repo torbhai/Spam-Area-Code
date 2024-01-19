@@ -4,8 +4,9 @@ import requests
 import random
 import os
 
-# Import the transformers classes
-from transformers import AutoModelForCausalLM, AutoTokenizer
+# Import the modified model and tokenizer classes
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
 
 # Get the constants from the environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN") # Get the bot token from the environment variable
@@ -39,10 +40,10 @@ def generate_and_send_number_leads(message):
         return
     # Try to generate the number leads
     try:
-        # Try to load the Llama 2 model and tokenizer
         try:
-            model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat")
-            tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat")
+            # Load the EleutherAI 6B model and tokenizer
+            model = AutoModelForSeq2SeqLM.from_pretrained("EleutherAI/gpt-neo-1.3B")
+            tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
         # Catch any errors that might occur when loading the model or tokenizer
         except (OSError, RuntimeError) as e:
             # Log the error message
