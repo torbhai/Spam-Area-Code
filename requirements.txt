@@ -1,3 +1,6 @@
 telebot
 transformers
 requests
+tensorflow
+torch
+flax
