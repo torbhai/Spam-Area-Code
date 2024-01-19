@@ -62,6 +62,5 @@ def generate_number_leads(message):
         # Send a feedback message to the user
         bot.reply_to(message, "Sorry, something went wrong with the Telegram API. Please try again later.")
     except requests.exceptions.RequestException as e:
-
 # Start the bot polling
 bot.polling()
