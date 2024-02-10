@@ -7,7 +7,7 @@ import json
 # Get the constants from the environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN") # Get the bot token from the environment variable
 COUNTRY_CODE = os.getenv("COUNTRY_CODE") # Get the country code from the environment variable
-YOU_API_URL = "https://api.you.com/v1/websearch" # You.com web search API URL
+YOU_API_URL = "https://api.ydc-index.io/search" # You.com web search API URL
 YOU_API_TOKEN = os.getenv("YOU_API_TOKEN") # Get the You.com API token from the environment variable
 
 # Create the bot object
