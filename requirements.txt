@@ -1,6 +1,4 @@
 telebot
-transformers
 requests
-tensorflow
-torch
-flax
+os
+json
