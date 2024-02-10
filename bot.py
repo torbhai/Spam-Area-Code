@@ -37,7 +37,6 @@ def generate_and_send_number_leads(message):
     try:
         # Prepare the data for the POST request
         data = {
-            "version": "2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
             "input": {"query": f"List of top 10 cities of {bank_name} with area codes in United States based on highest number of branches:"},
             "output": {"count": 10, "type": "text"}
         }
