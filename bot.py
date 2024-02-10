@@ -17,7 +17,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     # Send a welcome message and ask the user to enter the name of the bank
-    bot.reply_to(message, "Welcome to the Bank Number Leads Bot! Please enter the name of the bank.")
+    bot.reply_to(message, "Welcome to the Area Codes Grabber Bot! By @TheLogman Please enter the name of the bank.")
 
 # Define the message handler for any message
 @bot.message_handler(func=lambda message: True)
